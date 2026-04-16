@@ -1,0 +1,30 @@
+# Chặn toàn bộ các file và thư mục
+/*
+
+# Mở khóa (Cho phép) 3 thư mục quan trọng
+!/Assets/
+!/ProjectSettings/
+!/Packages/
+
+# Mở khóa luôn các file cấu hình cần thiết ở thư mục gốc (nếu có)
+!/.gitignore
+!/.gitattributes
+
+# Loại bỏ các file rác sinh ra bên trong các folder đã mở khóa
+[Aa]ssets/AssetStoreTools*
+[Aa]ssets/AssetStoreTools.meta
+
+# Loại bỏ các file tạm của IDE bên trong thư mục gốc
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.unityproj
+*.booproj
+
+# Loại bỏ thư mục Library và Temp (dù đã chặn ở trên nhưng ghi đè cho chắc chắn)
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
