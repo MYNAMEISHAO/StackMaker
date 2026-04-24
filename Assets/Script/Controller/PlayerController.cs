@@ -1,0 +1,164 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using Direction = InputManager.Direction;
+
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private GameObject brickPref;
+    [SerializeField] private GameObject playerImage;
+    [SerializeField] private Transform brickSpawnPoint;
+
+    private bool isMoving = false;
+    private float brickHeight;
+    private float brickLength;
+
+    private Vector3 targetPos; // Lưu điểm đến cuối cùng
+    private Vector3 firstPos;
+
+    public List<GameObject> collectedBricks = new List<GameObject>();
+
+    private void Awake()
+    {
+        Mesh mesh = brickPref.GetComponent<MeshFilter>().sharedMesh;
+        brickHeight = mesh.bounds.size.z * brickPref.transform.localScale.z;
+        brickLength = mesh.bounds.size.x * brickPref.transform.localScale.x;
+    }
+
+    private void Update()
+    {
+        if (!isMoving) return;
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+        InputManager.Instance.DeActiveInput();
+        if(Vector3.Distance(transform.position, targetPos) <= brickLength/2)
+        {
+            isMoving = false;
+            InputManager.Instance.ActiveInput();
+        }
+    }
+
+    public void OnInit(LevelData level)
+    {
+        //vì startPos lưu là vector3(x,y,0) trong tọa độ grid nhưng trong hệ tọa độ gốc thì nó là (x,0,z)
+        Vector3 v = new Vector3(level.startPos.x, 3, level.startPos.y);
+        transform.position = v;
+        firstPos = transform.position;
+        UpdatePlayerHeight();
+    }
+
+    public void Move(Direction dir)
+    {
+        Debug.Log("move duoc goi");
+        targetPos = SetTargetPos(dir);
+        if(Vector3.Distance(transform.position,targetPos)  <= brickLength)
+        {
+            isMoving = false;
+            Debug.Log("gap truong hop khoang cach qua gan");
+            return;
+        }
+        if(Vector3.Distance(transform.position, targetPos) > brickLength)
+        {
+            isMoving = true;
+            Debug.Log("Gap truong hop thoa man");
+        }
+    }
+    private Vector3 SetTargetPos(Direction dir)
+    {
+        Vector3 target;
+        Vector3 direction = CheckDirection(dir);
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, direction, out hit))
+        {
+            if (hit.collider.CompareTag("Wall"))
+            {
+                target = hit.point;
+                Debug.Log("hit target cach" + hit.distance);
+                return target;
+            }
+            if (hit.collider.CompareTag("Goal"))
+            {
+                target = hit.point + direction * brickLength/2;
+                Debug.Log("hit target cach" + hit.distance);
+                return target;
+            }
+        }
+        OnDrawGizmos();
+        return transform.position;
+    }
+    public Vector3 CheckDirection(Direction dir)
+    {
+        switch (dir)
+        {
+            case Direction.Left:
+                return Vector3.left;
+            case Direction.Right:
+                return Vector3.right;
+            case Direction.Forward:
+                return Vector3.forward;
+            case Direction.Back:
+                return Vector3.back;
+        }
+        return Vector3.zero;
+    }
+    public void PickUpBrick()
+    {
+        float posY = brickHeight * collectedBricks.Count;
+        Vector3 position = new Vector3(0,posY,0);
+        GameObject brick = SimplePool.Instance.Spawn(brickPref, position, brickPref.transform.rotation, brickSpawnPoint);
+        collectedBricks.Add(brick);
+        UpdatePlayerHeight();
+    }
+
+    public void DropBrick()
+    {
+        if (collectedBricks.Count <= 0)
+        {
+            isMoving = false;
+            return;
+        }
+        SimplePool.Instance.Despawn(collectedBricks[collectedBricks.Count - 1]);
+        collectedBricks.RemoveAt(collectedBricks.Count - 1);
+        UpdatePlayerHeight();
+    }
+    public void ClearBrick()
+    {
+        if (collectedBricks.Count <= 0) return;
+        for(int i = 0;i < collectedBricks.Count; i++)
+        {
+            SimplePool.Instance.Despawn(collectedBricks[i]);
+        }
+        collectedBricks.Clear();
+        UpdatePlayerHeight();
+    }
+
+    void UpdatePlayerHeight()
+    {
+        float offSet = brickHeight * collectedBricks.Count;
+        playerImage.transform.localPosition = new Vector3(0,offSet,0);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // 1. Vẽ tia Raycast đang bắn ra theo 4 hướng để kiểm tra va chạm (Chỉ vẽ trong Editor)
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position , Vector3.forward * 5f);
+        Gizmos.DrawRay(transform.position , Vector3.back * 5f);
+        Gizmos.DrawRay(transform.position, Vector3.left * 5f);
+        Gizmos.DrawRay(transform.position , Vector3.right * 5f);
+
+        // 2. Vẽ điểm đến cuối cùng (Target Position)
+        if (targetPos != Vector3.zero)
+        {
+            Gizmos.color = Color.red;
+            // Vẽ một khối cầu nhỏ tại điểm đích
+            Gizmos.DrawSphere(targetPos, 0.3f);
+
+            // Vẽ đường thẳng từ người chơi đến điểm đích
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, targetPos);
+        }
+    }
+}
