@@ -22627,6 +22627,7 @@ GameObject:
   - component: {fileID: 4157892317022374}
   - component: {fileID: 8132980707962774270}
   - component: {fileID: 6513774121706859937}
+  - component: {fileID: -8645766203936890309}
   m_Layer: 0
   m_Name: winpos
   m_TagString: Goal
@@ -22754,6 +22755,19 @@ MonoBehaviour:
   player: {fileID: 0}
   ChestClose: {fileID: 1095323009806971}
   ChestOpen: {fileID: 1502762753808250}
+--- !u!114 &-8645766203936890309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377060364527856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168693be50ef9f648a6f8f28b75e8c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockType: 7
 --- !u!1 &1382597685722805
 GameObject:
   m_ObjectHideFlags: 0
@@ -26926,7 +26940,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

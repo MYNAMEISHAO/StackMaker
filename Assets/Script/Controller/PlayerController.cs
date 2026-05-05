@@ -7,12 +7,22 @@ using Direction = InputManager.Direction;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum State
+    {
+        Idle,
+        Jumping,
+        Celebrating
+    }
+
     [SerializeField] private float speed = 10f;
     [SerializeField] private GameObject brickPref;
     [SerializeField] private GameObject playerImage;
     [SerializeField] private Transform brickSpawnPoint;
+    [SerializeField] private Animator anim;
 
+    [SerializeField] private State currentState;
     private bool isMoving = false;
+    private bool isSwitch = true;
     private float brickHeight;
     private float brickLength;
 
@@ -20,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 firstPos;
 
     public List<GameObject> collectedBricks = new List<GameObject>();
+    public int brickCount;
+    public Direction currentDirection;
 
     private void Awake()
     {
@@ -36,14 +48,16 @@ public class PlayerController : MonoBehaviour
         if(Vector3.Distance(transform.position, targetPos) <= brickLength/2)
         {
             isMoving = false;
+            isSwitch = true;
             InputManager.Instance.ActiveInput();
         }
     }
 
     public void OnInit(LevelData level)
     {
+        brickCount = 0;
         //vì startPos lưu là vector3(x,y,0) trong tọa độ grid nhưng trong hệ tọa độ gốc thì nó là (x,0,z)
-        Vector3 v = new Vector3(level.startPos.x, 3, level.startPos.y);
+        Vector3 v = new Vector3(level.startPos.x + 0.5f, 3, level.startPos.y + 0.5f);
         transform.position = v;
         firstPos = transform.position;
         UpdatePlayerHeight();
@@ -51,6 +65,8 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Direction dir)
     {
+        Debug.Log("isSwitch: " + isSwitch);
+        if (!isSwitch) return;
         Debug.Log("move duoc goi");
         targetPos = SetTargetPos(dir);
         if(Vector3.Distance(transform.position,targetPos)  <= brickLength)
@@ -62,6 +78,8 @@ public class PlayerController : MonoBehaviour
         if(Vector3.Distance(transform.position, targetPos) > brickLength)
         {
             isMoving = true;
+            isSwitch = false;
+            ChangeState(State.Jumping);
             Debug.Log("Gap truong hop thoa man");
         }
     }
@@ -69,8 +87,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 target;
         Vector3 direction = CheckDirection(dir);
+        if(direction == Vector3.zero) return transform.position;
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, direction, out hit))
+        currentDirection = dir;
+        if (Physics.Raycast(transform.position, direction, out hit))
         {
             if (hit.collider.CompareTag("Wall"))
             {
@@ -85,7 +105,6 @@ public class PlayerController : MonoBehaviour
                 return target;
             }
         }
-        OnDrawGizmos();
         return transform.position;
     }
     public Vector3 CheckDirection(Direction dir)
@@ -109,6 +128,7 @@ public class PlayerController : MonoBehaviour
         Vector3 position = new Vector3(0,posY,0);
         GameObject brick = SimplePool.Instance.Spawn(brickPref, position, brickPref.transform.rotation, brickSpawnPoint);
         collectedBricks.Add(brick);
+        brickCount++;
         UpdatePlayerHeight();
     }
 
@@ -136,8 +156,33 @@ public class PlayerController : MonoBehaviour
 
     void UpdatePlayerHeight()
     {
-        float offSet = brickHeight * collectedBricks.Count;
+        float offSet = brickHeight * (collectedBricks.Count-1);
         playerImage.transform.localPosition = new Vector3(0,offSet,0);
+    }
+
+    //các hàm animation
+    public void ChangeState(State state)
+    {
+        currentState = state;
+        switch (state)
+        {
+            case State.Idle:
+                anim.SetInteger("action", 0);
+                break;
+            case State.Jumping:
+                anim.SetInteger("action", 1);
+                StartCoroutine(ReturnToIdleAfterDelay(0.18f)); // Giả sử nhảy mất 0.5s
+                break;
+            case State.Celebrating:
+                anim.SetInteger("action", 2);
+                break;
+        }
+    }
+
+    public IEnumerator ReturnToIdleAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ChangeState(State.Idle);
     }
 
     private void OnDrawGizmos()
@@ -161,4 +206,6 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawLine(transform.position, targetPos);
         }
     }
+
+
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23425944778256323}
   - component: {fileID: 7558591108472046689}
   - component: {fileID: 1909733002839831039}
+  - component: {fileID: 1976637425637083425}
   m_Layer: 0
   m_Name: qiao
   m_TagString: Bridge
@@ -122,6 +123,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f61ccbe5b2340d54a97464ed28d9836b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1976637425637083425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765046182180127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168693be50ef9f648a6f8f28b75e8c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockType: 6
 --- !u!1001 &3522588378116029254
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -45,7 +45,6 @@ public class InputManager : MonoBehaviour
             else
                 direction = (swipeVector.y > 0) ? Direction.Forward : Direction.Back;
 
-            // Phát tín hiệu cho bất kỳ ai đang "nghe" (ở đây là Player)
             player.GetComponent<PlayerController>().Move(direction);
         }
     }

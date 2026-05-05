@@ -1,25 +1,39 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] private Transform WallTile;
-    [SerializeField] private Transform BridgeTile;
-    [SerializeField] private Transform BrickTile;
-    [SerializeField] private Transform GoalTile;
+    [System.Serializable]
+    public struct BlockConfigs
+    {
+        public GameObject pref;
+        public int type;
+        public Transform parent;
+    }
 
-    [SerializeField] private GameObject Bridge;
-    [SerializeField] private GameObject Brick;
-    [SerializeField] private GameObject Wall;
-    [SerializeField] private GameObject Goal;
+    [Header("Mappings")]
+    [SerializeField] private List<BlockConfigs> blocks;
+    private Dictionary<int,BlockConfigs> blockMappings = new Dictionary<int, BlockConfigs>();
 
     private int width, length;
     private Vector3 origin;
+    private List<GameObject> spawnedBlocks = new List<GameObject>();
 
+    public int stackCount = 0;
     public void OnInit(LevelData level)
     {
+        stackCount = 0;
+        //Nạp dữ liệu vào Dictionary cho dễ tìm
+        foreach (var configs in blocks){
+            if (!blockMappings.ContainsKey(configs.type))
+            {
+                blockMappings.Add(configs.type, configs);
+            }
+        }
+
+        //Lấy data level
         width = level.width;
         length = level.length;
         int index = 0;
@@ -31,25 +45,11 @@ public class GridManager : MonoBehaviour
                 int val = block.type;
                 Quaternion rotation = block.rotation;
                 Vector3 pos = CalculatePos(x, 0, y, 1, 1, 1);
-                if (val == 2)
-                {
-                    SimplePool.Instance.Spawn(Bridge,pos,block.rotation, BridgeTile);
-                }
-                else if (val == -1)
-                {
-                    SimplePool.Instance.Spawn(Wall, pos,block.rotation, WallTile);
-                }
-                else if (val == 1)
-                {
-                    SimplePool.Instance.Spawn(Brick, pos,block.rotation, BrickTile);
-                }
-                else if(val == -2)
-                {
-                    SimplePool.Instance.Spawn(Bridge, pos,block.rotation ,BridgeTile);
-                }
-                else if(val == 3)
-                {
-                    SimplePool.Instance.Spawn(Goal, pos, block.rotation, GoalTile);
+                
+                if(blockMappings.TryGetValue(val,out BlockConfigs blockConfigs)) { 
+                    GameObject go = SimplePool.Instance.Spawn(blockConfigs.pref, pos, rotation,blockConfigs.parent);
+                    spawnedBlocks.Add(go);
+                    if(blockConfigs.type>=1 && blockConfigs.type <= 5) stackCount++;
                 }
                 index++;
             }
@@ -58,11 +58,14 @@ public class GridManager : MonoBehaviour
 
     private Vector3 CalculatePos(int x,int y, int z, int length, int width, int height)
     {
-        return new Vector3(x *  width, y * height, z * length);
+        return new Vector3(x *  width + 0.5f, y * height, z * length + 0.5f);
     }
     public void ClearGrid()
     {
-        
+        foreach(var block in spawnedBlocks)
+        {
+            SimplePool.Instance.Despawn(block);
+        }
     }
    
 }

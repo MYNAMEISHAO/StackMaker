@@ -4,6 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(LevelDataGenerator))]
 public class LevelDataGeneratorEditor : Editor
 {
+    
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -11,14 +12,29 @@ public class LevelDataGeneratorEditor : Editor
         LevelDataGenerator generator =
             (LevelDataGenerator)target;
 
-        if (GUILayout.Button("Generate Level"))
-        {
-            generator.GenerateLevel();
-        }
 
         if(GUILayout.Button("Save Level"))
         {
-            generator.SaveToJson();
+            if(generator.levelSaveName == null)
+            {
+                Debug.LogError("Level Save Name cannot be empty!");
+                return;
+            }
+            generator.SaveLevel();
         }
+
+
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Load Level"))
+        {
+            generator.ConvertDataToScene();
+        }
+
+        EditorGUILayout.Space();
+        if (GUILayout.Button("Clear Scene"))
+        {
+            generator.ClearScene();
+        }
+
     }
 }

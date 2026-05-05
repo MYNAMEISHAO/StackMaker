@@ -12,6 +12,8 @@ public class LevelData
     public List<Block> gridData;
     public Vector3Int startPos;
 
+    public LevelData() { }
+
     public LevelData(string levelName, int width, int length, Vector3Int origin, List<Block> gridData, Vector3Int startPos)
     {
         this.levelName = levelName;
