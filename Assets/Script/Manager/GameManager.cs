@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static GameManager instance;
-    public static GameState currentState;
+    public GameState currentState;
     private void Awake()
     {
         instance = this;
@@ -41,17 +41,20 @@ public class GameManager : MonoBehaviour
 
     private void HandleLose()
     {
-
+        UIManager.Instance.OpenLoseUI();
+        InputManager.Instance.DeActiveInput();
     }
 
     private void HandleWin()
     {
         UIManager.Instance.OpenWinUI();
+        InputManager.Instance.DeActiveInput();
     }
 
     private void HandlePause()
     {
         UIManager.Instance.OpenSettingUI();
+        InputManager.Instance.DeActiveInput();
     }
 
     private void HandlePlay()
@@ -60,7 +63,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.CloseWinUI();
         UIManager.Instance.CloseSettingUI();
 
-
+        InputManager.Instance.ActiveInput();
     }
 
     private void HandleMain()
@@ -71,6 +74,11 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.OpenMenuUI();
         UIManager.Instance.OpenHeaderUI();
+
+        UIManager.Instance.CloseWinUI();
+        UIManager.Instance.CloseSettingUI();
+        UIManager.Instance.CloseLoseUI();
+
     }
 
     public void RestartLevel()
@@ -78,6 +86,7 @@ public class GameManager : MonoBehaviour
         int currentLevel = DataManager.Instance.getPlayerData().getLevel();
         Debug.Log("level load la" + currentLevel);
         LevelManager.Instance.OnLoadLevel(currentLevel);
+        ChangeState(GameState.Play);
     }
 
     public void NextLevel()
@@ -87,6 +96,7 @@ public class GameManager : MonoBehaviour
         DataManager.Instance.getPlayerData().setLevel(currentLevel);
         DataManager.Instance.SaveToJson();
         LevelManager.Instance.OnLoadLevel(currentLevel);
+        ChangeState(GameState.Play);
     }
     // Update is called once per frame
     public enum GameState

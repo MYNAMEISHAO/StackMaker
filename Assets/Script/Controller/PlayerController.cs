@@ -57,10 +57,12 @@ public class PlayerController : MonoBehaviour
     {
         brickCount = 0;
         //vì startPos lưu là vector3(x,y,0) trong tọa độ grid nhưng trong hệ tọa độ gốc thì nó là (x,0,z)
-        Vector3 v = new Vector3(level.startPos.x + 0.5f, 3, level.startPos.y + 0.5f);
+        Vector3 v = new Vector3(level.startPos.x + level.origin.x + 0.5f, 3, level.startPos.y + level.origin.y + 0.5f);
         transform.position = v;
         firstPos = transform.position;
         UpdatePlayerHeight();
+        ChangeState(State.Idle);
+
     }
 
     public void Move(Direction dir)

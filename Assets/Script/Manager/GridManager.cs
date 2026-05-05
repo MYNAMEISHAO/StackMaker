@@ -25,6 +25,7 @@ public class GridManager : MonoBehaviour
     public void OnInit(LevelData level)
     {
         stackCount = 0;
+        origin = level.origin;
         //Nạp dữ liệu vào Dictionary cho dễ tìm
         foreach (var configs in blocks){
             if (!blockMappings.ContainsKey(configs.type))
@@ -37,28 +38,26 @@ public class GridManager : MonoBehaviour
         width = level.width;
         length = level.length;
         int index = 0;
-        for (int y = 0; y < length; y++)
+        
+        foreach (var block in level.gridData)
         {
-            for(int x = 0; x < width; x++)
+            int val = block.type;
+            Quaternion rotation = block.rotation;
+            Vector3 pos = CalculatePos(block.position.x, 0, block.position.y, 1, 1, 1);
+
+            if (blockMappings.TryGetValue(val, out BlockConfigs blockConfigs))
             {
-                Block block = level.gridData[index];
-                int val = block.type;
-                Quaternion rotation = block.rotation;
-                Vector3 pos = CalculatePos(x, 0, y, 1, 1, 1);
-                
-                if(blockMappings.TryGetValue(val,out BlockConfigs blockConfigs)) { 
-                    GameObject go = SimplePool.Instance.Spawn(blockConfigs.pref, pos, rotation,blockConfigs.parent);
-                    spawnedBlocks.Add(go);
-                    if(blockConfigs.type>=1 && blockConfigs.type <= 5) stackCount++;
-                }
-                index++;
+                GameObject go = SimplePool.Instance.Spawn(blockConfigs.pref, pos, rotation, blockConfigs.parent);
+                spawnedBlocks.Add(go);
+                if (blockConfigs.type >= 1 && blockConfigs.type <= 5) stackCount++;
             }
+            index++;
         }
     }
 
     private Vector3 CalculatePos(int x,int y, int z, int length, int width, int height)
     {
-        return new Vector3(x *  width + 0.5f, y * height, z * length + 0.5f);
+        return new Vector3((x + origin.x) *  width + 0.5f, y * height, (z + origin.z) * length + 0.5f);
     }
     public void ClearGrid()
     {

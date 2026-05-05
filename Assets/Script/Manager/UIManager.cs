@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject settingUI;
     [SerializeField] private GameObject headerUI;
     [SerializeField] private GameObject winUI;
+    [SerializeField] private GameObject loseUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -58,20 +59,12 @@ public class UIManager : MonoBehaviour
     {
         winUI.gameObject.SetActive(false);
     }
-
-    public void UpdateUI()
+    public void OpenLoseUI()
     {
-        if (headerUI.activeInHierarchy)
-        {
-            headerUI.GetComponent<HederUI>().UpdateUI();
-        }
-        if (menuUI.activeInHierarchy)
-        {
-            menuUI.GetComponent<MenuUI>().UpdateUI();
-        }
-        if (settingUI.activeInHierarchy)
-        {
-            settingUI.GetComponent<SettingUI>().UpdateUI();
-        }
+        loseUI.gameObject.SetActive(true);
+    }
+    public void CloseLoseUI()
+    {
+        loseUI.gameObject.SetActive(false);
     }
 }

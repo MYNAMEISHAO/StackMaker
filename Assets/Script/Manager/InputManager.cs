@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        isActive = true;
     }
 
     void Update()
@@ -35,6 +36,11 @@ public class InputManager : MonoBehaviour
     }
     void DetectSwipe()
     {
+        if (GameManager.instance.currentState == GameManager.GameState.Main)
+        {
+            GameManager.instance.ChangeState(GameManager.GameState.Play);
+        }
+
         Vector2 swipeVector = endTouchPosition - startTouchPosition;
 
         if (swipeVector.magnitude > minSwipeDistance)

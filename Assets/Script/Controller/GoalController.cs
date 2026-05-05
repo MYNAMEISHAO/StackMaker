@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GoalController : MonoBehaviour
@@ -27,6 +28,14 @@ public class GoalController : MonoBehaviour
             PlayVictory();
             other.GetComponent<PlayerController>().ClearBrick();
             other.GetComponent<PlayerController>().ChangeState(PlayerController.State.Celebrating);
+            StartCoroutine(CallWinState(3f));
         }
+    }
+
+    public IEnumerator CallWinState(float time)
+    {
+        yield return new WaitForSeconds(time);
+        GameManager.instance.ChangeState(GameManager.GameState.Win);
+
     }
 }

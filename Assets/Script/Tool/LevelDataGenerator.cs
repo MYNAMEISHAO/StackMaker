@@ -68,15 +68,11 @@ public class LevelDataGenerator : MonoBehaviour
         if (totalBounds.size.x <= 0) return null;
 
         int width = totalBounds.size.x;
-        int height = totalBounds.size.y;
+        int length = totalBounds.size.y;
         Vector3Int origin = totalBounds.min;
+        Debug.Log(origin);
 
-        // Khởi tạo dữ liệu Grid (Dùng mảng 1 chiều ngay từ đầu cho khớp Json)
         List<Block> gridData = new List<Block>();
-        for (int i = 0; i < width * height; i++)
-        {
-            gridData.Add(new Block(0, Quaternion.identity));
-        }
         // Đổ dữ liệu từ các tilemap vào
         foreach (var map in tilemap)
         {
@@ -86,25 +82,24 @@ public class LevelDataGenerator : MonoBehaviour
                 int x = cellPos.x - origin.x;
                 int y = cellPos.y - origin.y;
 
-                if (x >= 0 && x < width && y >= 0 && y < height)
+                if (x >= 0 && x < width && y >= 0 && y < length)
                 {
-                    int index = y * width + x;
                     int val = child.GetComponent<BlockEntity>().blockType;
-                    //int finalValue = Mathf.Abs(child.eulerAngles.z) > 0.1f ? -val : val;
-                    gridData[index] = new Block(val, child.rotation);
+                    gridData.Add(new Block(val, child.rotation, cellPos));
                 }
             }
         }
 
         Vector3Int playerCellPos = grid.WorldToCell(playerStart.position);
-        Vector3Int playerOffset = playerCellPos - origin;
+        Debug.Log(playerCellPos);
+
 
         LevelData checkLevel = FindLevel();
         if(checkLevel!= null)
         {
-            return new LevelData(checkLevel.levelName, width, height, Vector3Int.zero, gridData, playerOffset);
+            return new LevelData(checkLevel.levelName, width, length, origin, gridData, playerCellPos);
         }
-        return new LevelData(levelSaveName, width, height, Vector3Int.zero, gridData, playerOffset);
+        return new LevelData(levelSaveName, width, length, origin, gridData, playerCellPos);
 
     }
 
