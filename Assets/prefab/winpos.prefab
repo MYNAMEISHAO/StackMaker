@@ -22752,7 +22752,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireWork1: {fileID: 198723746604263940}
   fireWork2: {fileID: 198957174810120253}
-  player: {fileID: 0}
   ChestClose: {fileID: 1095323009806971}
   ChestOpen: {fileID: 1502762753808250}
 --- !u!114 &-8645766203936890309
@@ -26582,7 +26581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4127882339869582
 Transform:
   m_ObjectHideFlags: 0

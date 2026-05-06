@@ -3,14 +3,16 @@ using UnityEngine;
 public class GemController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if(other.CompareTag("Player"))
+        {
+            if(DataManager.Instance != null)
+            {
+                int currentGem = DataManager.Instance.getPlayerData().getGem();
+                DataManager.Instance.getPlayerData().setGem(currentGem + 10);
+            }
+            SimplePool.Instance.Despawn(gameObject);
+        }
     }
 }

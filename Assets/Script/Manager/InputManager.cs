@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
     }
     void DetectSwipe()
     {
-        if (GameManager.instance.currentState == GameManager.GameState.Main)
+        if (GameManager.instance != null && GameManager.instance.currentState == GameManager.GameState.Main)
         {
             GameManager.instance.ChangeState(GameManager.GameState.Play);
         }

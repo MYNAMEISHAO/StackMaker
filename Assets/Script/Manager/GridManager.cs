@@ -57,7 +57,8 @@ public class GridManager : MonoBehaviour
 
     private Vector3 CalculatePos(int x,int y, int z, int length, int width, int height)
     {
-        return new Vector3((x + origin.x) *  width + 0.5f, y * height, (z + origin.z) * length + 0.5f);
+        Vector3 offset = Vector3.zero - origin;
+        return new Vector3((x + offset.x) *  width + 0.5f, y * height, (z + offset.z) * length + 0.5f);
     }
     public void ClearGrid()
     {
