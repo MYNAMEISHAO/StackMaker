@@ -418,7 +418,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &50929601
 RectTransform:
   m_ObjectHideFlags: 0
@@ -574,7 +574,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &94843252
 RectTransform:
   m_ObjectHideFlags: 0
@@ -872,9 +872,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 452505828}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: CloseSettingUI
+      - m_Target: {fileID: 50929602}
+        m_TargetAssemblyTypeName: SettingUI, Assembly-CSharp
+        m_MethodName: OnResumeClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1791,7 +1791,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1876913320}
-        m_TargetAssemblyTypeName: HederUI, Assembly-CSharp
+        m_TargetAssemblyTypeName: HeaderUI, Assembly-CSharp
         m_MethodName: OnSettingClick
         m_Mode: 1
         m_Arguments:
@@ -8740,6 +8740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSwipeDistance: 50
   player: {fileID: 878725311}
+  isActive: 1
 --- !u!1 &1140473732
 GameObject:
   m_ObjectHideFlags: 0
@@ -9051,7 +9052,7 @@ Transform:
   m_GameObject: {fileID: 1192808623}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.65, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

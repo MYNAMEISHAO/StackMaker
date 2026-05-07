@@ -29,7 +29,6 @@ public class WinUI : MonoBehaviour
 
     public void OnNextLevelClick()
     {
-
         WaitForCollectedCoin(2f);
     }
 

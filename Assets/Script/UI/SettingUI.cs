@@ -28,12 +28,6 @@ public class SettingUI : MonoBehaviour
         GameManager.instance.ChangeState(GameManager.GameState.Main);
     }
 
-    public void OnExitClick()
-    {
-        UIManager.Instance.CloseSettingUI();
-        GameManager.instance.ChangeState(GameManager.GameState.Play);
-    }
-
     public void OnResumeClick()
     {
         UIManager.Instance.CloseSettingUI();

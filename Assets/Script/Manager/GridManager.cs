@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GridManager : MonoBehaviour
 {
-    [System.Serializable]
+    [Serializable]
     public struct BlockConfigs
     {
         public GameObject pref;
@@ -26,7 +27,6 @@ public class GridManager : MonoBehaviour
     {
         stackCount = 0;
         origin = level.origin;
-        //Nạp dữ liệu vào Dictionary cho dễ tìm
         foreach (var configs in blocks){
             if (!blockMappings.ContainsKey(configs.type))
             {

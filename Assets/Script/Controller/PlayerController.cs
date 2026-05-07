@@ -44,12 +44,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!isMoving) return;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-        InputManager.Instance.DeActiveInput();
         if(Vector3.Distance(transform.position, targetPos) <= brickLength/2)
         {
             isMoving = false;
             isSwitch = true;
-            InputManager.Instance.ActiveInput();
+            if(GameManager.instance.currentState == GameManager.GameState.Play) InputManager.Instance.ActiveInput();
             if(currentState!=State.Celebrating) ChangeState(State.Jumping);
         }
     }
@@ -84,6 +83,7 @@ public class PlayerController : MonoBehaviour
             isMoving = true;
             isSwitch = false;
             Debug.Log("Gap truong hop thoa man");
+            InputManager.Instance.DeActiveInput();
         }
     }
     private Vector3 SetTargetPos(Direction dir)

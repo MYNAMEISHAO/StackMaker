@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private GameObject player;
     Direction direction;
-    bool isActive= true;
+    public bool isActive= true;
 
     private void Awake()
     {

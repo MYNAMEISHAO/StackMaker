@@ -22,7 +22,7 @@ public class LevelDataGenerator : MonoBehaviour
     [SerializeField] private Transform playerStart;
     [SerializeField] private bool confirmSaveFix; // Checkbox xác nhận
 
-    //1. Các hàm dành cho chức năng lưu từ sence sang dữ liệu
+    //Các hàm dành cho chức năng lưu từ sence sang dữ liệu
     public void SaveLevel()
     {
         LevelData data = ConvertSceneToData();
@@ -30,7 +30,6 @@ public class LevelDataGenerator : MonoBehaviour
 
         LevelDataBase db = LevelIO.LoadDatabase();
 
-        // Cập nhật nếu đã tồn tại, nếu chưa thì thêm mới
         int existingIndex = db.levels.FindIndex(l => l.levelName == data.levelName);
         if (existingIndex != -1)
         {
@@ -40,8 +39,7 @@ public class LevelDataGenerator : MonoBehaviour
                 return;
             }
             db.levels[existingIndex] = data;
-            Debug.Log(db.levels[existingIndex].startPos);
-            Debug.Log($"<color=orange>Đã ghi đè Level: {data.levelName}</color>");
+            Debug.Log($"Đã ghi đè Level: {data.levelName}");
 
         }
         else
@@ -49,7 +47,7 @@ public class LevelDataGenerator : MonoBehaviour
             if(Regex.IsMatch(data.levelName, @"^Level_\d+$"))
             {
                 db.levels.Add(data);
-                Debug.Log($"Level '{data.levelName}' saved successfully.");
+                Debug.Log("Level" + levelSaveName + " saved successfully.");
             }
             else
             {
@@ -58,12 +56,11 @@ public class LevelDataGenerator : MonoBehaviour
             
         }
         LevelIO.SaveDatabase(db);
-        confirmSaveFix = false; // Reset checkbox sau khi lưu thành công
+        confirmSaveFix = false;
     }
 
     private LevelData ConvertSceneToData()
     {
-        // Tính toán Bounds tổng quát
         BoundsInt totalBounds = GetCombinedBounds();
         if (totalBounds.size.x <= 0) return null;
 
@@ -73,7 +70,6 @@ public class LevelDataGenerator : MonoBehaviour
         Debug.Log(origin);
 
         List<Block> gridData = new List<Block>();
-        // Đổ dữ liệu từ các tilemap vào
         foreach (var map in tilemap)
         {
             foreach (Transform child in map.transform)
@@ -124,12 +120,11 @@ public class LevelDataGenerator : MonoBehaviour
 
         if (!hasData || min.x == int.MaxValue) 
         {
-        // Trả về một bounds mặc định tại tâm thay vì giá trị cực đại
             return new BoundsInt(Vector3Int.zero, Vector3Int.one);
         }
         return new BoundsInt(min.x, min.y, 0, max.x - min.x + 1, max.y - min.y + 1, 1);
     }
-    //2. Các hàm dành cho chức năng chuyển đổi từ dữ liệu sang scene
+    //Các hàm dành cho chức năng chuyển đổi từ dữ liệu sang scene
     public void ConvertDataToScene()
     {
         LevelData levelData = FindLevel();
@@ -148,7 +143,7 @@ public class LevelDataGenerator : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"Level '{levelSaveName}' not found in database. Cannot convert to scene.");
+            Debug.LogWarning("Level " + levelSaveName + " not found in database. Cannot convert to scene.");
         }
     }
 
@@ -167,7 +162,7 @@ public class LevelDataGenerator : MonoBehaviour
         }
     }
 
-    //3. Các hàm liên quan đến việc xóa scene trước khi chuyển đổi dữ liệu sang scene
+    //Các hàm liên quan đến việc xóa scene 
     public void ClearScene()
     {
         //simplePool.OnInit();
