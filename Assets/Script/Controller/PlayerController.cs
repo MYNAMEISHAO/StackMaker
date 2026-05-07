@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
     private float brickLength;
 
     private Vector3 targetPos; // Lưu điểm đến cuối cùng
-    private Vector3 firstPos;
 
     public List<GameObject> collectedBricks = new List<GameObject>();
     public int brickCount;
@@ -60,7 +59,6 @@ public class PlayerController : MonoBehaviour
         Vector3 offset = Vector3.zero - level.origin;
         Vector3 v = new Vector3(level.startPos.x + offset.x + 0.5f, 3, level.startPos.y + offset.z + 0.5f);
         transform.position = v;
-        firstPos = transform.position;
         UpdatePlayerHeight();
         ChangeState(State.Idle);
 
@@ -175,7 +173,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case State.Jumping:
                 anim.SetInteger("action", 1);
-                StartCoroutine(ReturnToIdleAfterDelay(0.18f)); // Giả sử nhảy mất 0.5s
+                StartCoroutine(ReturnToIdleAfterDelay(0.2f));
                 break;
             case State.Celebrating:
                 anim.SetInteger("action", 2);
