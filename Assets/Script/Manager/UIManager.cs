@@ -67,4 +67,20 @@ public class UIManager : MonoBehaviour
     {
         loseUI.gameObject.SetActive(false);
     }
+
+    public void UpdateUI()
+    {
+        if (headerUI != null)
+        {
+            headerUI.GetComponent<HeaderUI>().UpdateUI();
+        }
+        if(winUI != null)
+        {
+            winUI.GetComponent<WinUI>().UpdateUI();
+        }
+        if(loseUI != null)
+        {
+            //loseUI.GetComponent<LoseUI>().UpdateUI();
+        }
+    }
 }

@@ -33,7 +33,6 @@ public class DataManager : MonoBehaviour
             CreateNewFile();
         }
     }
-
     public PlayerData getPlayerData()
     {
         if (playerData == null)
@@ -42,6 +41,43 @@ public class DataManager : MonoBehaviour
         }
         return playerData;
     }
+
+    public void AddGem()
+    {
+        if (playerData != null)
+        {
+            playerData.setGem(playerData.getGem() + 10);
+            SaveToJson();
+        }
+    }
+
+    public void SetSound(bool isSoundOn)
+    {
+        if (playerData != null)
+        {
+            playerData.setSoundOn(isSoundOn);
+            SaveToJson();
+        }
+    }
+
+    public void SetMusic(bool isMusicOn)
+    {
+        if (playerData != null)
+        {
+            playerData.setMusicOn(isMusicOn);
+            SaveToJson();
+        }
+    }
+
+    public void SetShake(bool isShakeOn)
+    {
+        if (playerData != null)
+        {
+            playerData.setShakeOn(isShakeOn);
+            SaveToJson();
+        }
+    }
+
     public void SavePlayerData(PlayerData newData)
     {
         playerData = newData;

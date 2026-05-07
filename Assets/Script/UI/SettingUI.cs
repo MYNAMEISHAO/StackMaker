@@ -10,6 +10,13 @@ public class SettingUI : MonoBehaviour
     private bool isSoundOn = true;
     private bool isMusicOn = true;
     private bool isShakeOn = true;
+
+    private void OnEnable()
+    {
+        isSoundOn = DataManager.Instance.getPlayerData().isSoundOn();
+        isMusicOn = DataManager.Instance.getPlayerData().isMusicOn();
+        soundButton.transform.GetChild(0).gameObject.SetActive(isSoundOn);
+    }
     public void OnRetryClick()
     {
         GameManager.instance.RestartLevel();

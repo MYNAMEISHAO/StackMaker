@@ -10,7 +10,8 @@ public class GemController : MonoBehaviour
             if(DataManager.Instance != null)
             {
                 int currentGem = DataManager.Instance.getPlayerData().getGem();
-                DataManager.Instance.getPlayerData().setGem(currentGem + 10);
+                DataManager.Instance.AddGem();
+                UIManager.Instance.UpdateUI();
             }
             SimplePool.Instance.Despawn(gameObject);
         }

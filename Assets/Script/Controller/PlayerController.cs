@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
             isMoving = false;
             isSwitch = true;
             InputManager.Instance.ActiveInput();
+            if(currentState!=State.Celebrating) ChangeState(State.Jumping);
         }
     }
 
@@ -82,7 +83,6 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = true;
             isSwitch = false;
-            ChangeState(State.Jumping);
             Debug.Log("Gap truong hop thoa man");
         }
     }
@@ -140,6 +140,7 @@ public class PlayerController : MonoBehaviour
         if (collectedBricks.Count <= 0)
         {
             isMoving = false;
+            GameManager.instance.ChangeState(GameManager.GameState.Lose);
             return;
         }
         SimplePool.Instance.Despawn(collectedBricks[collectedBricks.Count - 1]);
