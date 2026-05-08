@@ -29,14 +29,9 @@ public class WinUI : MonoBehaviour
 
     public void OnNextLevelClick()
     {
-        WaitForCollectedCoin(2f);
-    }
-
-    IEnumerator WaitForCollectedCoin(float delay)
-    {
-        yield return new WaitForSeconds(delay);
         GameManager.instance.NextLevel();
     }
+
     public void UpdateUI()
     {
         stackCount.text = "Stacks:\n" + player.brickCount + " / " + totalStack;
