@@ -10,7 +10,6 @@ public class TurnController : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    // Update is called once per frame
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))

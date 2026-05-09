@@ -4,7 +4,7 @@ using UnityEngine;
 public class LoseUI : MonoBehaviour
 {
     [SerializeField] private PlayerController player;
-    [SerializeField] private GridManager grid;
+    [SerializeField] private GridController grid;
 
     [SerializeField] private TextMeshProUGUI stackCountText;
 

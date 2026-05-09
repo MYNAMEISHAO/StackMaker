@@ -4,7 +4,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-5)]
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private GridManager grid;
+    [SerializeField] private GridController grid;
     [SerializeField] private PlayerController player;
     public static LevelManager Instance;
     private string levelPath;
@@ -52,7 +52,6 @@ public class LevelManager : MonoBehaviour
 
     private int GetLevelNumber(string name)
     {
-        // Dùng Regex để lấy tất cả các chữ số trong tên
         string result = Regex.Match(name, @"\d+").Value;
         if (int.TryParse(result, out int number))
         {

@@ -7,7 +7,7 @@ public class WinUI : MonoBehaviour
  
     [SerializeField] private TextMeshProUGUI stackCount;
     [SerializeField] private PlayerController player;
-    [SerializeField] private GridManager grid;
+    [SerializeField] private GridController grid;
 
     private int totalStack;
 

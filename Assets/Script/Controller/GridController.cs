@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class GridManager : MonoBehaviour
+public class GridController : MonoBehaviour
 {
     [Serializable]
     public struct BlockConfigs
@@ -54,7 +54,7 @@ public class GridManager : MonoBehaviour
             index++;
         }
     }
-
+    //vì lấy số nguyên theo grid thì nó sẽ không đứng ở giữa ô nên cần + thêm 0.5f để nó đứng ở giữa ô
     private Vector3 CalculatePos(int x,int y, int z, int length, int width, int height)
     {
         Vector3 offset = Vector3.zero - origin;

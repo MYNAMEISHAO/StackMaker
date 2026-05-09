@@ -14,7 +14,7 @@ public class LevelDataGenerator : MonoBehaviour
     [SerializeField] private PlayerController playerController;
 
     [Header("Dependencies")]
-    [SerializeField] private GridManager gridManager;
+    [SerializeField] private GridController gridManager;
     [SerializeField] private SimplePool simplePool;
 
     [Header("Settings")]

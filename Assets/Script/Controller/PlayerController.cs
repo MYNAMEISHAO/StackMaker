@@ -61,9 +61,8 @@ public class PlayerController : MonoBehaviour
         transform.position = v;
         UpdatePlayerHeight();
         ChangeState(State.Idle);
-
     }
-
+    //các hàm liên quan đến di chuyển
     public void Move(Direction dir)
     {
         Debug.Log("isSwitch: " + isSwitch);
@@ -123,6 +122,7 @@ public class PlayerController : MonoBehaviour
         }
         return Vector3.zero;
     }
+    //các hàm liên quan đến gạch
     public void PickUpBrick()
     {
         float posY = brickHeight * collectedBricks.Count;
