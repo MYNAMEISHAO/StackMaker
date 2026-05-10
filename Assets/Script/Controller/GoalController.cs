@@ -9,8 +9,12 @@ public class GoalController : MonoBehaviour
     [SerializeField] private GameObject ChestClose;
     [SerializeField] private GameObject ChestOpen;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Awake()
+    private void OnEnable()
     {
+        fireWork1.Stop();
+        fireWork2.Stop();
+        ChestClose.SetActive(true);
+        ChestOpen.SetActive(false);
     }
 
     void PlayVictory()
@@ -26,8 +30,8 @@ public class GoalController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PlayVictory();
-            other.GetComponent<PlayerController>().ClearBrick();
-            other.GetComponent<PlayerController>().ChangeState(PlayerController.State.Celebrating);
+            PlayerController.Instance.ClearBrick();
+            PlayerController.Instance.ChangeState(PlayerController.State.Celebrating);
             StartCoroutine(CallWinState(3f));
         }
     }

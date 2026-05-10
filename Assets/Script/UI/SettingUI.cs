@@ -11,6 +11,8 @@ public class SettingUI : MonoBehaviour
     private bool isMusicOn = true;
     private bool isShakeOn = true;
 
+    [SerializeField] private FaderUI faderUI;
+
     private void OnEnable()
     {
         isSoundOn = DataManager.Instance.getPlayerData().isSoundOn();
@@ -19,19 +21,22 @@ public class SettingUI : MonoBehaviour
     }
     public void OnRetryClick()
     {
-        GameManager.instance.RestartLevel();
-        GameManager.instance.ChangeState(GameManager.GameState.Play);
+        faderUI.Transition(() =>
+        {
+            GameManager.instance.RestartLevel();
+        }, 0.5f);
     }
-
     public void OnMainMenuClick()
     {
-        GameManager.instance.ChangeState(GameManager.GameState.Main);
+        faderUI.Transition(() =>
+        {
+            GameManager.instance.ChangeState(GameManager.GameState.Main);
+        }, 0.5f);
+        
     }
-
     public void OnResumeClick()
     {
-        UIManager.Instance.CloseSettingUI();
-        GameManager.instance.ChangeState(GameManager.GameState.Play);
+        GameManager.instance.ResumeLevel();
     }
 
     public void OnSoundClick()

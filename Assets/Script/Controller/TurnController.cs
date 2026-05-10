@@ -9,19 +9,20 @@ public class TurnController : MonoBehaviour
     [SerializeField] private Direction toDir2;
 
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject brick;
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player entered turn controller");
-            if (other.GetComponent<PlayerController>().currentDirection == dir1)
+            if (PlayerController.Instance.currentDirection == dir1)
             {
-                other.GetComponent<PlayerController>().Move(toDir1);
+                PlayerController.Instance.Move(toDir1);
             }
-             else if (other.GetComponent<PlayerController>().currentDirection == dir2)
+            else if (PlayerController.Instance.currentDirection == dir2)
             {
-                other.GetComponent<PlayerController>().Move(toDir2);
+                PlayerController.Instance.Move(toDir2);
             }
         }
     }
@@ -30,6 +31,8 @@ public class TurnController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             animator.SetInteger("turn", 1);
+        PlayerController.Instance.PickUpBrick();
+        brick.SetActive(false);
     }
 
     private void OnTriggerExit(Collider other)
@@ -37,6 +40,12 @@ public class TurnController : MonoBehaviour
         if (other.CompareTag("Player"))
             animator.SetInteger("turn", 0);
     }
+
+    private void OnEnable()
+    {
+        brick.SetActive(true);
+    }
+
 }
 
 

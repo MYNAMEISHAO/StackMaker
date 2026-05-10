@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.OpenSettingUI();
         InputManager.Instance.DeActiveInput();
+
+        PlayerController.Instance.SetMoving(false);
     }
 
     private void HandlePlay()
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.CloseMenuUI();
         UIManager.Instance.CloseWinUI();
         UIManager.Instance.CloseSettingUI();
+        UIManager.Instance.CloseLoseUI();
 
         InputManager.Instance.ActiveInput();
     }
@@ -78,7 +81,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.CloseWinUI();
         UIManager.Instance.CloseSettingUI();
         UIManager.Instance.CloseLoseUI();
-
+        InputManager.Instance.ActiveInput();
     }
 
     public void RestartLevel()
@@ -94,8 +97,15 @@ public class GameManager : MonoBehaviour
         int currentLevel = DataManager.Instance.getPlayerData().getLevel();
         currentLevel++;
         DataManager.Instance.getPlayerData().setLevel(currentLevel);
-        DataManager.Instance.SaveToJson();
         LevelManager.Instance.OnLoadLevel(currentLevel);
+        DataManager.Instance.SaveToJson();
+        UIManager.Instance.UpdateUI();
+        ChangeState(GameState.Play);
+    }
+
+    public void ResumeLevel()
+    {
+        PlayerController.Instance.SetMoving(true);
         ChangeState(GameState.Play);
     }
     // Update is called once per frame

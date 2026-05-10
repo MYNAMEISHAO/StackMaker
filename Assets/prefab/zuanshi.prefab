@@ -7861,6 +7861,7 @@ GameObject:
   - component: {fileID: 4601497704145792}
   - component: {fileID: 33969984017398061}
   - component: {fileID: 23554150464023228}
+  - component: {fileID: 2803397190828431714}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -7936,6 +7937,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!111 &2803397190828431714
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628058503909474}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 83bf37b2d68073d40864a30b013e2557, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 83bf37b2d68073d40864a30b013e2557, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
 --- !u!1 &1957927936394622
 GameObject:
   m_ObjectHideFlags: 0
@@ -7945,7 +7963,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4204581141324716}
-  - component: {fileID: 111197235321722274}
   - component: {fileID: -8078334517259955168}
   - component: {fileID: 1694571135660582230}
   - component: {fileID: -4990665359361885886}
@@ -7973,23 +7990,6 @@ Transform:
   - {fileID: 224497980358545946}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -0, z: 0}
---- !u!111 &111197235321722274
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957927936394622}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 83bf37b2d68073d40864a30b013e2557, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 83bf37b2d68073d40864a30b013e2557, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!65 &-8078334517259955168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8036,3 +8036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e77273a462b1044599024e2c8ffef1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  endPoint: {fileID: 0}
+  parent: {fileID: 0}
+  moveDuration: 1
+  moveEase: 0

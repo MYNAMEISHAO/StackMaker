@@ -47,7 +47,14 @@ public class DataManager : MonoBehaviour
         if (playerData != null)
         {
             playerData.setGem(playerData.getGem() + 10);
-            SaveToJson();
+        }
+    }
+
+    public void AddCoin()
+    {
+        if (playerData != null)
+        {
+            playerData.setCoin(playerData.getCoin() + 4);
         }
     }
 
@@ -56,7 +63,6 @@ public class DataManager : MonoBehaviour
         if (playerData != null)
         {
             playerData.setSoundOn(isSoundOn);
-            SaveToJson();
         }
     }
 
@@ -65,7 +71,6 @@ public class DataManager : MonoBehaviour
         if (playerData != null)
         {
             playerData.setMusicOn(isMusicOn);
-            SaveToJson();
         }
     }
 
@@ -74,15 +79,9 @@ public class DataManager : MonoBehaviour
         if (playerData != null)
         {
             playerData.setShakeOn(isShakeOn);
-            SaveToJson();
         }
     }
 
-    public void SavePlayerData(PlayerData newData)
-    {
-        playerData = newData;
-        SaveToJson();
-    }
     public void SaveToJson()
     {
         if (playerData != null)

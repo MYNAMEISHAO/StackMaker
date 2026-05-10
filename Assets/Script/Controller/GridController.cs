@@ -25,6 +25,7 @@ public class GridController : MonoBehaviour
     public int stackCount = 0;
     public void OnInit(LevelData level)
     {
+        ClearGrid();
         stackCount = 0;
         origin = level.origin;
         foreach (var configs in blocks){
@@ -37,7 +38,6 @@ public class GridController : MonoBehaviour
         //Lấy data level
         width = level.width;
         length = level.length;
-        int index = 0;
         
         foreach (var block in level.gridData)
         {
@@ -51,7 +51,6 @@ public class GridController : MonoBehaviour
                 spawnedBlocks.Add(go);
                 if (blockConfigs.type >= 1 && blockConfigs.type <= 5) stackCount++;
             }
-            index++;
         }
     }
     //vì lấy số nguyên theo grid thì nó sẽ không đứng ở giữa ô nên cần + thêm 0.5f để nó đứng ở giữa ô
@@ -66,6 +65,7 @@ public class GridController : MonoBehaviour
         {
             SimplePool.Instance.Despawn(block);
         }
+        spawnedBlocks.Clear();
     }
    
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class LoseUI : MonoBehaviour
     [SerializeField] private GridController grid;
 
     [SerializeField] private TextMeshProUGUI stackCountText;
+    [SerializeField] private FaderUI faderUI;
+
 
     private int stackCount;
     private int totalStack;
@@ -27,11 +30,17 @@ public class LoseUI : MonoBehaviour
 
     public void OnRetryClick()
     {
-        GameManager.instance.RestartLevel();
+        faderUI.Transition(() =>
+        {
+            GameManager.instance.RestartLevel();
+        }, 0.5f);
     }
 
     public void OnMenuClick()
     {
-        GameManager.instance.ChangeState(GameManager.GameState.Main);
+        faderUI.Transition(() =>
+        {
+            GameManager.instance.ChangeState(GameManager.GameState.Main);
+        }, 0.5f);
     }
 }

@@ -4,7 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using Direction = InputManager.Direction;
-
+[DefaultExecutionOrder(-4)]
 public class PlayerController : MonoBehaviour
 {
     public enum State
@@ -16,9 +16,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float speed = 10f;
     [SerializeField] private GameObject brickPref;
+    [SerializeField] private Mesh brickMesh;
     [SerializeField] private GameObject playerImage;
     [SerializeField] private Transform brickSpawnPoint;
     [SerializeField] private Animator anim;
+    [SerializeField] private Vector3 startRotate;
 
     [SerializeField] private State currentState;
     private bool isMoving = false;
@@ -32,11 +34,13 @@ public class PlayerController : MonoBehaviour
     public int brickCount;
     public Direction currentDirection;
 
+    public static PlayerController Instance;
+
     private void Awake()
     {
-        Mesh mesh = brickPref.GetComponent<MeshFilter>().sharedMesh;
-        brickHeight = mesh.bounds.size.z * brickPref.transform.localScale.z;
-        brickLength = mesh.bounds.size.x * brickPref.transform.localScale.x;
+        brickHeight = brickMesh.bounds.size.z * brickPref.transform.localScale.z;
+        brickLength = brickMesh.bounds.size.x * brickPref.transform.localScale.x;
+        Instance = this;
     }
 
     private void Update()
@@ -47,21 +51,31 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = false;
             isSwitch = true;
-            if(GameManager.instance.currentState == GameManager.GameState.Play) InputManager.Instance.ActiveInput();
+            if (GameManager.instance != null || GameManager.instance.currentState == GameManager.GameState.Play) InputManager.Instance.ActiveInput();
             if(currentState!=State.Celebrating) ChangeState(State.Jumping);
         }
     }
 
     public void OnInit(LevelData level)
     {
+        isMoving = false;
+        isSwitch = true;
+
         brickCount = 0;
+        ClearBrick();
         //vì startPos lưu là vector3(x,y,0) trong tọa độ grid nhưng trong hệ tọa độ gốc thì nó là (x,0,z)
         Vector3 offset = Vector3.zero - level.origin;
         Vector3 v = new Vector3(level.startPos.x + offset.x + 0.5f, 3, level.startPos.y + offset.z + 0.5f);
+
         transform.position = v;
-        UpdatePlayerHeight();
+        targetPos = v;
+
+        playerImage.transform.localRotation = Quaternion.Euler(startRotate);
+
         ChangeState(State.Idle);
+        UpdatePlayerHeight();
     }
+
     //các hàm liên quan đến di chuyển
     public void Move(Direction dir)
     {
@@ -122,6 +136,11 @@ public class PlayerController : MonoBehaviour
         }
         return Vector3.zero;
     }
+
+    public void SetMoving(bool b)
+    {
+        isMoving = b;
+    }
     //các hàm liên quan đến gạch
     public void PickUpBrick()
     {
@@ -176,6 +195,7 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(ReturnToIdleAfterDelay(0.2f));
                 break;
             case State.Celebrating:
+                playerImage.transform.localRotation = Quaternion.Euler(Vector3.zero);
                 anim.SetInteger("action", 2);
                 break;
         }

@@ -74,10 +74,6 @@ public class UIManager : MonoBehaviour
         {
             headerUI.GetComponent<HeaderUI>().UpdateUI();
         }
-        if(winUI != null)
-        {
-            winUI.GetComponent<WinUI>().UpdateUI();
-        }
         if(loseUI != null)
         {
             //loseUI.GetComponent<LoseUI>().UpdateUI();

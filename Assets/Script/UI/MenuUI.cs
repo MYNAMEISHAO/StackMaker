@@ -6,20 +6,19 @@ public class MenuUI : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private GameObject playImage;
 
-    private void OnEnable()
+    private void Start()
     {
         UpdateUI();
     }
-
-    public void OnClickPlay()
+    private void OnEnable()
     {
-        GameManager.instance.ChangeState(GameManager.GameState.Play);
+        UpdateUI();
     }
 
     public void UpdateUI()
     {
         levelText.text = "Level " + DataManager.Instance.getPlayerData().getLevel();
     }
-
 }

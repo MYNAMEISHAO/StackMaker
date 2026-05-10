@@ -1,39 +1,76 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class WinUI : MonoBehaviour
 {
- 
-    [SerializeField] private TextMeshProUGUI stackCount;
-    [SerializeField] private PlayerController player;
-    [SerializeField] private GridController grid;
+    [SerializeField] private GameObject coinImage;
+    [SerializeField] private GameObject coinPref;
 
-    private int totalStack;
+    [SerializeField] private Transform coinStart;
+    [SerializeField] private Transform coinEnd;
 
+    [SerializeField] private float coinMoveDuration = 1f;
+    [SerializeField] private Ease coinMoveEase;
+
+
+    [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private FaderUI faderUI;
     private void OnEnable()
     {
-        totalStack = grid.stackCount;
-        UpdateUI();
+        coinText.text = DataManager.Instance.getPlayerData().getCoin().ToString();
+        coinImage.SetActive(true);
     }
 
     public void OnRetryClick()
     {
-        GameManager.instance.RestartLevel();
-    }
-
-    public void OnMainMenuClick()
-    {
-        GameManager.instance.ChangeState(GameManager.GameState.Main);
+        faderUI.Transition(() =>
+        {
+            GameManager.instance.RestartLevel();
+        }, 0.5f);
     }
 
     public void OnNextLevelClick()
     {
-        GameManager.instance.NextLevel();
+        SpawnCoins();
+        coinImage.SetActive(false);
+        StartCoroutine(WaitForCoin());
+    }
+
+    public IEnumerator WaitForCoin()
+    {
+        yield return new WaitForSeconds(3f);
+        faderUI.Transition(() =>
+        {
+            GameManager.instance.NextLevel();
+        }, 0.5f);
     }
 
     public void UpdateUI()
     {
-        stackCount.text = "Stacks:\n" + player.brickCount + " / " + totalStack;
+        coinText.text = DataManager.Instance.getPlayerData().getCoin().ToString();
+    }
+
+
+    public void SpawnCoins()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            GameObject coin = SimplePool.Instance.Spawn(coinPref, coinStart.localPosition, Quaternion.identity, transform);
+            var offset = new Vector3(Random.Range(-100, 100), Random.Range(-100, 100), 0);
+            var startPos = coinStart.transform.position + offset;
+
+            coin.transform.DOMove(startPos, coinMoveDuration).SetEase(coinMoveEase);
+            coin.transform.DOMove(coinEnd.position, coinMoveDuration).SetEase(coinMoveEase).OnComplete(() => CompleteMove(coin)).SetDelay(1f);
+        }
+    }
+
+    public void CompleteMove(GameObject gameObject)
+    {
+        SimplePool.Instance.Despawn(gameObject);
+        int currentCoin = int.Parse(coinText.text);
+        DataManager.Instance.AddCoin();
+        UpdateUI();
     }
 }

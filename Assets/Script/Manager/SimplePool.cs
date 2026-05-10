@@ -33,6 +33,7 @@ public class SimplePool : MonoBehaviour
             spawnedObject = pool[key].Dequeue();
             spawnedObject.SetActive(true);
             spawnedObject.transform.localPosition = position;
+            spawnedObject.transform.rotation = rotation;
         }
         else
         {
@@ -40,9 +41,11 @@ public class SimplePool : MonoBehaviour
             spawnedObject.SetActive(true);
             spawnedObject.name = key;
             spawnedObject.transform.localPosition = position;
+            spawnedObject.transform.rotation = rotation;
         }
         return spawnedObject;
     }
+
 
     public void Despawn(GameObject pref)
     {
