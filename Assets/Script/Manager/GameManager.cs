@@ -8,8 +8,15 @@ public class GameManager : MonoBehaviour
     public GameState currentState;
     private void Awake()
     {
-        instance = this;
-        OnInit();
+        if (instance == null)
+        {
+            instance = this;
+            OnInit();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnInit()

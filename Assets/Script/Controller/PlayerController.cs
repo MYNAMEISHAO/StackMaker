@@ -40,7 +40,14 @@ public class PlayerController : MonoBehaviour
     {
         brickHeight = brickMesh.bounds.size.z * brickPref.transform.localScale.z;
         brickLength = brickMesh.bounds.size.x * brickPref.transform.localScale.x;
-        Instance = this;
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Update()

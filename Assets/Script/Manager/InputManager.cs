@@ -15,8 +15,15 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        isActive = true;
+        if(Instance == null)
+        {
+            Instance = this;
+            isActive = true;
+        }
+        else
+        {
+            Destroy(Instance);
+        }
     }
 
     void Update()

@@ -16,7 +16,14 @@ public class SimplePool : MonoBehaviour
 
     public void OnInit()
     {
-        Instance = this;
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(Instance);
+        }
     }
 
     public GameObject Spawn(GameObject pref, Vector3 position,Quaternion rotation, Transform parent)

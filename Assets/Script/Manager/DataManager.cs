@@ -11,8 +11,15 @@ public class DataManager : MonoBehaviour
     private string playerPath;
     private void Awake()
     {
-        Instance = this;
-        LoadDataPlayer();
+        if (Instance == null)
+        {
+            Instance = this;
+            LoadDataPlayer();
+        }
+        else
+        {
+            Destroy(Instance);
+        }
     }
 
     private void LoadDataPlayer()

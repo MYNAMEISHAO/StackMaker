@@ -12,8 +12,15 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        OnInit();
+        if (Instance == null)
+        {
+            Instance = this;
+            OnInit();
+        }
+        else
+        {
+            Destroy(Instance);
+        }
     }
 
     public void OnInit()

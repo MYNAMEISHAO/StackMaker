@@ -17,7 +17,14 @@ public class UIManager : MonoBehaviour
 
     private void OnInit()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(Instance);
+        }
     }
     // Update is called once per frame
     public void OpenMenuUI()
